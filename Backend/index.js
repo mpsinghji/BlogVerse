@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 
 import blogRoute from "./routes/blogRoute.js";
 import commentRoute from "./routes/commentRoute.js";
+import userRoute from "./routes/authUserRoute.js";
 
 import connectdb from "./config/db.js";
 
@@ -27,6 +28,7 @@ async function main() {
     });
     app.use("/api/blogs", blogRoute);
     app.use("/api/comments", commentRoute);
+    app.use("/api/users", userRoute);
 
     app.listen(port, () => {
       console.log(`App is listening at http://localhost:${port}`);
