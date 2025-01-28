@@ -2,16 +2,17 @@ import express from "express";
 import Blog from "../models/blogModel.js";
 import Comment from "../models/commentModel.js";
 import verifyToken from "../middleware/verifyToken.js";
+import isAdmin from "../middleware/isAdmin.js";
 
 const router = express.Router();
 
 //create a blog
-router.post("/create-post", verifyToken, async (req, res) => {
+router.post("/create-post", verifyToken,isAdmin, async (req, res) => {
   try {
     // console.log(req.body);
 
     // to get all the data from the body
-    const newPost = new Blog({ ...req.body }); // todo: use author: req.userId, when you have token verify
+    const newPost = new Blog({ ...req.body,author: req.userId });
     await newPost.save();
     res.status(201).send({
       message: "Post created successfully",
