@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 
+import blogRoute from "./routes/blogRoute.js";
+
 import connectdb from "./config/db.js";
 
 dotenv.config({path:"./config/config.env"});
@@ -22,6 +24,7 @@ async function main() {
     app.get("/", (req, res) => {
       res.send("Hello, BlogVerse server is running...");
     });
+    app.use("/api/blogs", blogRoute);
 
     app.listen(port, () => {
       console.log(`App is listening at http://localhost:${port}`);
