@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import blogRoute from "./routes/blogRoute.js";
+import commentRoute from "./routes/commentRoute.js";
 
 import connectdb from "./config/db.js";
 
@@ -25,6 +26,7 @@ async function main() {
       res.send("Hello, BlogVerse server is running...");
     });
     app.use("/api/blogs", blogRoute);
+    app.use("/api/comments", commentRoute);
 
     app.listen(port, () => {
       console.log(`App is listening at http://localhost:${port}`);
