@@ -9,7 +9,7 @@ router.post("/create-post", async (req, res) => {
     // console.log(req.body);
 
     // to get all the data from the body
-    const newPost = new Blog(req.body);
+    const newPost = new Blog({ ...req.body, author: req.userId });
     await newPost.save();
     res.status(201).send({
       message: "Post created successfully",
@@ -52,7 +52,9 @@ router.get("/", async (req, res) => {
       };
     }
 
-    const post = await Blog.find(query).sort({ createdAt: -1 });
+    const post = await Blog.find(query)
+      .populate("author", "email")
+      .sort({ createdAt: -1 });
     res.status(200).send({
       message: "All posts fetched successfully",
       posts: post,
@@ -74,7 +76,10 @@ router.get("/:id", async (req, res) => {
     }
 
     // TODO: will also fetch comment with the post
-    const comment = await Comment.find({ postId: postId }).populate("user","username email");
+    const comment = await Comment.find({ postId: postId }).populate(
+      "user",
+      "username email"
+    );
 
     res.status(200).send({
       message: "Post fetched successfully",
@@ -129,29 +134,34 @@ router.delete("/:id", async (req, res) => {
 //related posts
 router.get("/related/:id", async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
     if (!id) {
       return res.status(404).json({ message: "Post Id is required" });
     }
     const blog = await Blog.findById(id);
-    if(!blog){
+    if (!blog) {
       return res.status(404).json({ message: "Post not found" });
     }
     const titleRegex = new RegExp(blog.title.split(" ").join("|"), "i");
 
     const relatedQuery = {
-        _id : { $ne: blog._id }, //exclude the current blog by id
-        title: { $regex: titleRegex },
-    } 
+      _id: { $ne: blog._id }, //exclude the current blog by id
+      title: { $regex: titleRegex },
+    };
 
     const relatedPost = await Blog.find(relatedQuery);
-    res.status(200).json({ message: "Related posts fetched successfully", posts: relatedPost });
+    res
+      .status(200)
+      .json({
+        message: "Related posts fetched successfully",
+        posts: relatedPost,
+      });
 
     res.status(200).json({ message: "Related posts fetched successfully" });
-    } catch (error) {
-      console.error("Error fetching related posts", error);
-      res.status(500).json({ message: "Error fetching related posts" });
-    }
+  } catch (error) {
+    console.error("Error fetching related posts", error);
+    res.status(500).json({ message: "Error fetching related posts" });
+  }
 });
 
 export default router;

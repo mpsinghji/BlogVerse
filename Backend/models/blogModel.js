@@ -8,7 +8,8 @@ const blogSchema = new mongoose.Schema({
     type: String,
   },
   content: {
-    type: String,
+    type: Object,
+    required: true,
   },
   coverImg:{
     type: String,
@@ -17,7 +18,9 @@ const blogSchema = new mongoose.Schema({
     type: String,
   },
   author:{
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+    required: true,
   },
   rating:{
     type: Number,

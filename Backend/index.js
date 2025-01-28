@@ -28,7 +28,7 @@ async function main() {
     });
     app.use("/api/blogs", blogRoute);
     app.use("/api/comments", commentRoute);
-    app.use("/api/users", userRoute);
+    app.use("/api/auth", userRoute);
 
     app.listen(port, () => {
       console.log(`App is listening at http://localhost:${port}`);
