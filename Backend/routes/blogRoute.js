@@ -1,15 +1,17 @@
 import express from "express";
 import Blog from "../models/blogModel.js";
 import Comment from "../models/commentModel.js";
+import verifyToken from "../middleware/verifyToken.js";
+
 const router = express.Router();
 
 //create a blog
-router.post("/create-post", async (req, res) => {
+router.post("/create-post", verifyToken, async (req, res) => {
   try {
     // console.log(req.body);
 
     // to get all the data from the body
-    const newPost = new Blog({ ...req.body, author: req.userId });
+    const newPost = new Blog({ ...req.body }); // todo: use author: req.userId, when you have token verify
     await newPost.save();
     res.status(201).send({
       message: "Post created successfully",
@@ -92,7 +94,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // update a blog post
-router.patch("/update-post/:id", async (req, res) => {
+router.patch("/update-post/:id", verifyToken, async (req, res) => {
   try {
     const postId = req.params.id;
     const updatedpost = await Blog.findByIdAndUpdate(postId, req.body, {
@@ -112,7 +114,7 @@ router.patch("/update-post/:id", async (req, res) => {
 });
 
 // delete a blog post
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", verifyToken, async (req, res) => {
   try {
     const postId = req.params.id;
     const post = await Blog.findByIdAndDelete(postId);
@@ -132,7 +134,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 //related posts
-router.get("/related/:id", async (req, res) => {
+router.get("/related/:id", verifyToken, async (req, res) => {
   try {
     const { id } = req.params;
     if (!id) {
@@ -150,12 +152,10 @@ router.get("/related/:id", async (req, res) => {
     };
 
     const relatedPost = await Blog.find(relatedQuery);
-    res
-      .status(200)
-      .json({
-        message: "Related posts fetched successfully",
-        posts: relatedPost,
-      });
+    res.status(200).json({
+      message: "Related posts fetched successfully",
+      posts: relatedPost,
+    });
 
     res.status(200).json({ message: "Related posts fetched successfully" });
   } catch (error) {
