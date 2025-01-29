@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Home from "../pages/home/Home.jsx";
-import About from "../pages/home/miniPage/About.jsx";
-import PrivacyPolicy from "../pages/home/miniPage/PrivacyPolicy.jsx";
-import ContactUs from "../pages/home/miniPage/ContactUs.jsx";
+import About from "../pages/miniPage/About.jsx";
+import PrivacyPolicy from "../pages/miniPage/PrivacyPolicy.jsx";
+import ContactUs from "../pages/miniPage/ContactUs.jsx";
 
 const router = createBrowserRouter([
   {
