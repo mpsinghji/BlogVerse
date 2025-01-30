@@ -13,7 +13,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   return (
-    <header className="bg-white py-6 border">
+    <header className="bg-white py-6">
       <nav className="container mx-auto flex justify-between px-5">
         <a href="/">
           <img src="/logo.png" alt="Logo" className="h-12" />
