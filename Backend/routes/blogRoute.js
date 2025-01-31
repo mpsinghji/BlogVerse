@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
   try {
     //to search for a blog
     const { search, category, location } = req.query;
-    console.log(search);
+    // console.log(search);
 
     let query = {};
 

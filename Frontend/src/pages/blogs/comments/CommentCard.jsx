@@ -1,6 +1,7 @@
 import React from "react";
 import DefaultUserIcon from "../../../assets/defaultUserIcon.png";
 import { formatDate } from "../../../utils/formatDate";
+import PostAComment from "./PostAComment";
 
 const CommentCard = ({ comments }) => {
   return (
@@ -35,6 +36,7 @@ const CommentCard = ({ comments }) => {
           <div className="text-lg font-medium">No Comments Yet</div>
         )}
       </div>
+      <PostAComment/>
     </div>
   );
 };
