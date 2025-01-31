@@ -15,7 +15,10 @@ const port = process.env.PORT;
 
 // parse options
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: process.env.WEB_URL,
+  credentials: true,
+}));
 
 // Connect to MongoDB
 async function main() {

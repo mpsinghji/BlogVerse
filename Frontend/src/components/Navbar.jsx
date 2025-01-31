@@ -16,11 +16,11 @@ const Navbar = () => {
     <header className="bg-white py-6">
       <nav className="container mx-auto flex justify-between px-5">
         <a href="/">
-          <img src="/logo.png" alt="Logo" className="h-12" />
+          <img src="./src/assets/logo.png" alt="Logo" className="h-12" />
         </a>
         <ul className="sm:flex hidden items-center gap-8">
           {navLists.map((list, index) => (
-            <li>
+            <li key={index}>
               <NavLink
                 to={list.link}
                 className={({ isActive }) => (isActive ? "active" : "")}
@@ -55,7 +55,7 @@ const Navbar = () => {
       {isMenuOpen && (
         <ul className="fixed top-[108px] left-0 w-full h-auto pb-8 border-b bg-white shadow-sm z-50">
           {navLists.map((list, index) => (
-            <li className="mt-5 px-4">
+            <li className="mt-5 px-4" key={index}>
               <NavLink
                 onClick={() => setIsMenuOpen(false)}
                 to={list.link}

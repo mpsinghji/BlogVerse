@@ -7,12 +7,12 @@ import isAdmin from "../middleware/isAdmin.js";
 const router = express.Router();
 
 //create a blog
-router.post("/create-post", verifyToken,isAdmin, async (req, res) => {
+router.post("/create-post", verifyToken, isAdmin, async (req, res) => {
   try {
     // console.log(req.body);
 
     // to get all the data from the body
-    const newPost = new Blog({ ...req.body,author: req.userId });
+    const newPost = new Blog({ ...req.body, author: req.userId });
     await newPost.save();
     res.status(201).send({
       message: "Post created successfully",
@@ -55,13 +55,10 @@ router.get("/", async (req, res) => {
       };
     }
 
-    const post = await Blog.find(query)
+    const posts = await Blog.find(query)
       .populate("author", "email")
       .sort({ createdAt: -1 });
-    res.status(200).send({
-      message: "All posts fetched successfully",
-      posts: post,
-    });
+    res.status(200).send( posts );
   } catch (error) {
     console.error("Error fetching posts", error);
   }

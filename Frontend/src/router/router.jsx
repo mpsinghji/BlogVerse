@@ -4,6 +4,7 @@ import Home from "../pages/home/Home.jsx";
 import About from "../pages/miniPage/About.jsx";
 import PrivacyPolicy from "../pages/miniPage/PrivacyPolicy.jsx";
 import ContactUs from "../pages/miniPage/ContactUs.jsx";
+import SingleBlog from "../pages/blogs/singleBlog/SingleBlog.jsx";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
         path: "/contact-us",
         element: <ContactUs />,
       },
+      {
+        path: "blogs/:id",
+        element: <SingleBlog />,
+      }
     ],
   },
 ]);

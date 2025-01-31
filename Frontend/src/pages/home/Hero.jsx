@@ -10,9 +10,9 @@ const Hero = () => {
   return (
     <div className="flex flex-col md:flex-row justify-between items-center md:gap-14 gap-8">
       <div className="md:w-1/2 w-full items-center">
-        <hl className="md:text-5xl text-3xl font-bold md:leading-tight">
+        <h1 className="md:text-5xl text-3xl font-bold md:leading-tight">
           HEADING
-        </hl>
+        </h1>
         <p className="py-4">
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Temporibus dicta in nam recusandae accusantium nisi at aliquam alias eveniet saepe magni, tempora, consequatur similique inventore? Cum dolor quas quam culpa!
           Officiis fugiat possimus dolores praesentium vero est nisi, obcaecati placeat consequatur eum sequi consectetur eaque! Mollitia odit nisi quam perferendis praesentium necessitatibus, eos maxime ea sunt. Quam quibusdam quisquam possimus.
