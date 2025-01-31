@@ -28,7 +28,7 @@ const Blogs = () => {
       {isLoading && <div>Loading...</div>}
       {error && <div>Error: {error.toString()}</div>}
 
-      <div className="mt-8 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
+      <div className="mt-8 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-8">
         {blogs.map(blog => (
           <Link
           to={`/blogs/${blog._id}`}

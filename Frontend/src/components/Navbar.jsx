@@ -16,7 +16,7 @@ const Navbar = () => {
     <header className="bg-white py-6">
       <nav className="container mx-auto flex justify-between px-5">
         <a href="/">
-          <img src="./src/assets/logo.png" alt="Logo" className="h-12" />
+          <img src="https://i.postimg.cc/ncsCpN7D/logo.png" alt="Logo" className="h-12" />
         </a>
         <ul className="sm:flex hidden items-center gap-8">
           {navLists.map((list, index) => (
