@@ -8,8 +8,16 @@ export const BlogApi = createApi({
   }),
   endpoints: (builder) => ({
     fetchBlogs: builder.query({
-      query: (search = "", category = "", location = "") =>
-        `/blogs?search=${search}&category=${category}&location=${location}`,
+      // query: (search = "", category = "", location = "") =>
+      //   `/blogs?search=${search}&category=${category}&location=${location}`,
+      query:(params) =>({
+        url: `/blogs`,
+        params: {
+          search: params?.search || "",
+          category: params?.category || "",
+          location: params?.location || "",
+        }
+      })
     }),
     fetchBlogById : builder.query({ 
       query: (id) => `/blogs/${id}`,

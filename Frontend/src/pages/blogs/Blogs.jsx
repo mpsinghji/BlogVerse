@@ -6,17 +6,25 @@ import { Link } from "react-router-dom";
 const Blogs = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
-  const [query, setQuery] = useState({ search: "", category: "" });
+  // const [query, setQuery] = useState({ search: "", category: "" });
+  const [searchParams, setSearchParams] = useState({
+    search: "",
+    category: ""
+  });
 
   //get data using redux
-  const { data: blogs = [], error, isLoading } = useFetchBlogsQuery(query);
+  // const { data: blogs = [], error, isLoading } = useFetchBlogsQuery(query);
+  const { data: blogs = [], error, isLoading } = useFetchBlogsQuery(searchParams);
   // console.log(blogs);
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
+  // const handleSearch = () => {
+  //   setQuery({ search, category });
+  // };
   const handleSearch = () => {
-    setQuery({ search, category });
+    setSearchParams({ search, category });
   };
   return (
     <div className="mt-16 container mx-auto">

@@ -38,7 +38,8 @@ router.get("/", async (req, res) => {
         ...query,
         $or: [
           { title: { $regex: search, $options: "i" } },
-          { content: { $regex: search, $options: "i" } },
+          // { content: { $regex: search, $options: "i" } },
+          { description: { $regex: search, $options: "i" } }
         ],
       };
     }
@@ -61,6 +62,7 @@ router.get("/", async (req, res) => {
     res.status(200).send( posts );
   } catch (error) {
     console.error("Error fetching posts", error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 
@@ -151,8 +153,6 @@ router.get("/related/:id", async (req, res) => {
 
     const relatedPost = await Blog.find(relatedQuery);
     res.status(200).json(relatedPost);
-
-    res.status(200).json({ message: "Related posts fetched successfully" });
   } catch (error) {
     console.error("Error fetching related posts", error);
     res.status(500).json({ message: "Error fetching related posts" });

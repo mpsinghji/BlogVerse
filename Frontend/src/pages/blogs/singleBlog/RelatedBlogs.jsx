@@ -5,7 +5,6 @@ import { Link, useParams } from "react-router-dom";
 const RelatedBlogs = () => {
   const { id } = useParams();
   const { data: blog = [], error, isLoading } = useFetchRelatedBlogsQuery(id);
-  // console.log(blog);
   return (
     <div>
       <h3 className="text-2xl font-medium pt-8 px-8 pb-5">Related Blogs</h3>
