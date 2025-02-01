@@ -1,30 +1,62 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
+import { FaPaperPlane } from "react-icons/fa";
 
 const PostAComment = () => {
   const { id } = useParams();
-  const { comment, setComment } = useState("");
-  //TODO: handling posting functionality
+  const [comment, setComment] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    // TODO: Add comment posting functionality
+    console.log("Comment:", comment);
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setComment("");
+    }, 2000);
+  };
+
   return (
-    <div className="mt-8">
-      <h3 className="text-lg font-medium mb-8">Leave a Comment</h3>
-      <form>
-        <textarea
-          name="text"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          cols={30}
-          rows={10}
-          placeholder="Share your opinion about this post..."
-          className="w-full bg-[#f8f8fa] focus:outline-none p-5"
-        />
-        <button
-          type="submit"
-          className="w-full bg-[#191919] hover:bg-indigo-500 text-white font-medium py-3 rounded-md"
-        >
-          Submit
-        </button>
-      </form>
+    <div className="group relative">
+      <div className="absolute -inset-1 bg-gradient-to-r from-purple-600/20 to-cyan-500/20 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
+      <div className="relative bg-slate-900/40 backdrop-blur-lg rounded-xl border border-slate-700/30 p-6">
+        <h3 className="text-xl font-bold bg-gradient-to-r from-purple-400 to-cyan-300 bg-clip-text text-transparent mb-6">
+          Share Your Thoughts
+        </h3>
+        <form onSubmit={handleSubmit}>
+          <div className="relative">
+            <textarea
+              name="comment"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Write your comment here..."
+              className="w-full bg-slate-800/40 backdrop-blur-sm rounded-lg border border-slate-700/30 focus:border-purple-500/60 focus:ring-2 focus:ring-purple-500/20 transition-all duration-300 outline-none text-slate-100 placeholder-slate-400 p-4"
+              rows={5}
+              disabled={isSubmitting}
+              required
+            />
+            <div className="absolute inset-0 rounded-lg pointer-events-none border border-slate-500/30 group-hover:border-purple-500/50 transition-all duration-300 mix-blend-overlay" />
+          </div>
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full mt-6 bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 text-white font-semibold py-3 rounded-xl transform transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg hover:shadow-purple-500/20 flex items-center justify-center space-x-2"
+          >
+            {isSubmitting ? (
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            ) : (
+              <>
+                <FaPaperPlane className="w-5 h-5" />
+                <span>Post Comment</span>
+              </>
+            )}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
