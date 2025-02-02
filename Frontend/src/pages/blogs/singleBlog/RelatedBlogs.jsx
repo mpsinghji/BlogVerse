@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFetchRelatedBlogsQuery } from "../../../redux/features/blogs/BlogsApi";
 import { Link, useParams } from "react-router-dom";
 
@@ -6,6 +6,9 @@ const RelatedBlogs = () => {
   const { id } = useParams();
   const { data: blog = [], error, isLoading } = useFetchRelatedBlogsQuery(id);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [id]);
   return (
     <div className="bg-slate-800/40 backdrop-blur-lg rounded-2xl border border-slate-700/30">
       <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-cyan-300 bg-clip-text text-transparent p-6">

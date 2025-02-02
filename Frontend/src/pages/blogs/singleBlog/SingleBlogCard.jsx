@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { formatDate } from "../../../utils/formatDate";
 import EditorJSHTML from "editorjs-html";
 
@@ -16,6 +16,11 @@ const SingleBlogCard = ({ blogs }) => {
     createdAt,
   } = blogs || {};
   const htmlContent = editorJSHTML.parse(content);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  , []);
 
   return (
     <div className="space-y-8">

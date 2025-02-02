@@ -1,21 +1,39 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../../redux/features/auth/authApi";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [loginUser, { isLoading: loginLoading }] = useLoginMutation();
+
+  const navigate=useNavigate();
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const data = { email, password };
+    try {
+      const response = await loginUser(data).unwrap();
+      console.log(response);
+      const {token, user} = response;
+      alert('Login Successful');
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+      setMessage("Invalid Credentials");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 flex items-center justify-center p-4">
       <div className="relative max-w-md w-full bg-gradient-to-br from-slate-800/30 to-slate-900/50 backdrop-blur-xl rounded-2xl p-8 shadow-2xl shadow-purple-500/20 animate-float">
         <div className="absolute inset-0 rounded-2xl border border-slate-600/30 mix-blend-overlay" />
-        
+
         <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-purple-400 via-blue-300 to-indigo-400 bg-clip-text text-transparent">
           Welcome Back
         </h2>
-        
-        <form className="space-y-6">
+
+        <form className="space-y-6" onSubmit={handleLogin}>
           <div className="group relative">
             <input
               type="email"
@@ -46,8 +64,11 @@ const Login = () => {
             </p>
           )}
 
-          <button className="w-full mt-8 bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-500 hover:to-blue-400 text-white font-semibold py-4 rounded-xl transform transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg hover:shadow-purple-500/20">
-            Access Portal
+          <button
+            disabled={loginLoading}
+            className="w-full mt-8 bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-500 hover:to-blue-400 text-white font-semibold py-4 rounded-xl transform transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg hover:shadow-purple-500/20"
+          >
+            Sign In
           </button>
         </form>
 
