@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { IoMenuSharp, IoClose } from "react-icons/io5";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../redux/features/auth/authSlice";
 
 const navLists = [
   { name: "Home", link: "/" },
@@ -11,7 +13,15 @@ const navLists = [
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  // Handle logout
+  const handleLogout = () => {
+    dispatch(logout());
+    setIsMenuOpen(false); // Close mobile menu after logout
+  };
 
   return (
     <header className="bg-gradient-to-b from-slate-900/80 to-slate-800/20 backdrop-blur-xl border-b border-slate-700/30 fixed w-full z-50">
@@ -31,8 +41,8 @@ const Navbar = () => {
             <li key={index}>
               <NavLink
                 to={list.link}
-                className={({ isActive }) => 
-                  `relative px-4 py-2 text-slate-300 hover:text-white transition-all
+                className={({ isActive }) =>
+                  `relative px-4 py-2 text-slate-200 hover:text-white transition-all
                   duration-300 text-sm font-medium before:absolute before:-bottom-1 
                   before:h-0.5 before:bg-gradient-to-r before:from-purple-500 before:to-cyan-400 
                   before:transition-all before:duration-300 before:w-0 hover:before:w-full
@@ -43,16 +53,42 @@ const Navbar = () => {
               </NavLink>
             </li>
           ))}
-          <li>
-            <NavLink 
-              to="/login" 
-              className="px-6 py-2.5 bg-gradient-to-r from-purple-600 to-cyan-500 rounded-full
-              text-white font-semibold text-sm hover:from-purple-500 hover:to-cyan-400 
-              transition-all duration-300 shadow-lg hover:shadow-purple-500/30 flex items-center space-x-2"
-            >
-              <span>Login</span>
-            </NavLink>
-          </li>
+          {/* Combined user/admin conditional */}
+          {user ? (
+            <li className="flex items-center gap-3">
+              <img
+                src="https://i.postimg.cc/xC29D4QL/default-User-Icon.png"
+                alt="User Profile"
+                className="size-8 rounded-full"
+              />
+              {user.role === "admin" ? (
+                <Link to="/dashboard">
+                  <button className="bg-[#1E73BE] px-4 py-1.5 text-white rounded-sm hover:bg-[#165a9e] transition-colors rounded-xl">
+                    Dashboard
+                  </button>
+                </Link>
+              ) : null}
+              <button
+                onClick={handleLogout}
+                className="bg-red-600 px-4 py-1.5 text-white rounded-sm hover:bg-red-700 transition-colors rounded-xl"
+              >
+                Logout
+              </button>
+            </li>
+          ) : (
+            <li>
+              <NavLink
+                to="/login"
+                className={({ isActive }) =>
+                  `bg-[#1E73BE] px-4 py-1.5 text-white rounded-sm transition-colors rounded-xl ${
+                    isActive ? "text-[#FFF]" : ""
+                  }`
+                }
+              >
+                Login
+              </NavLink>
+            </li>
+          )}
         </ul>
 
         {/* Mobile Menu Button */}
@@ -70,34 +106,71 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="lg:hidden fixed top-20 left-0 w-full h-[calc(100vh-5rem)] bg-slate-900/95
-          backdrop-blur-2xl transition-all duration-300">
+          <div
+            className="lg:hidden fixed top-20 left-0 w-full h-[calc(100vh-5rem)] bg-slate-900/95
+          backdrop-blur-2xl transition-all duration-300"
+          >
             <ul className="container mx-auto px-5 py-8 space-y-6">
               {navLists.map((list, index) => (
                 <li key={index}>
                   <NavLink
                     onClick={toggleMenu}
                     to={list.link}
-                    className={({ isActive }) => 
+                    className={({ isActive }) =>
                       `block text-xl text-slate-300 hover:text-white px-4 py-3 rounded-xl
-                      transition-all duration-300 ${isActive ? "bg-slate-800/50 text-white" : ""}`
+                      transition-all duration-300 ${
+                        isActive ? "bg-slate-800/50 text-white" : ""
+                      }`
                     }
                   >
                     {list.name}
                   </NavLink>
                 </li>
               ))}
-              <li className="mt-8">
-                <NavLink
-                  to="/login"
-                  onClick={toggleMenu}
-                  className="block w-full px-6 py-3.5 text-center bg-gradient-to-r
-                  from-purple-600 to-cyan-500 rounded-full text-white font-semibold text-lg
-                  hover:from-purple-500 hover:to-cyan-400 transition-all duration-300 flex items-center justify-center space-x-2"
-                >
-                  <span>Login</span>
-                </NavLink>
-              </li>
+              {/* Mobile Auth Section */}
+              {user ? (
+                <>
+                  <li>
+                    <div className="flex items-center gap-3 px-4 py-3">
+                      <img
+                        src="https://i.postimg.cc/xC29D4QL/default-User-Icon.png"
+                        alt="User Profile"
+                        className="size-8 rounded-full"
+                      />
+                      <span className="text-white">{user.email}</span>
+                    </div>
+                  </li>
+                  {user.role === "admin" && (
+                    <li>
+                      <Link
+                        to="/dashboard"
+                        onClick={toggleMenu}
+                        className="block w-full px-6 py-3.5 text-center bg-[#1E73BE] rounded-full text-white font-semibold text-lg hover:bg-[#165a9e] transition-colors"
+                      >
+                        Dashboard
+                      </Link>
+                    </li>
+                  )}
+                  <li>
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full px-6 py-3.5 text-center bg-red-600 rounded-full text-white font-semibold text-lg hover:bg-red-700 transition-colors"
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <li>
+                  <NavLink
+                    to="/login"
+                    onClick={toggleMenu}
+                    className="block w-full px-6 py-3.5 text-center bg-[#1E73BE] rounded-full text-white font-semibold text-lg hover:bg-[#165a9e] transition-colors"
+                  >
+                    Login
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </div>
         )}

@@ -1,10 +1,9 @@
 import React from "react";
 import { FaTwitter, FaGithub, FaLinkedin } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="relative bg-gradient-to-b from-slate-900 via-blue-900 to-purple-900 border-t border-slate-700/30">
+    <footer className="relative bg-gradient-to-b from-[#111] to-[#111] backdrop-blur-xl border-b border-slate-700/30 fixed w-full z-50">
 
       <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -25,7 +24,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h4 className="text-lg font-bold bg-gradient-to-r from-purple-400 to-cyan-300 bg-clip-text text-transparent">
+            <h4 className="text-lg font-bold bg-white bg-clip-text text-transparent">
               Explore
             </h4>
             <ul className="space-y-2">
@@ -49,7 +48,7 @@ const Footer = () => {
 
           {/* Social Media */}
           <div className="space-y-4">
-            <h4 className="text-lg font-bold bg-gradient-to-r from-purple-400 to-cyan-300 bg-clip-text text-transparent">
+            <h4 className="text-lg font-bold bg-white bg-clip-text text-transparent">
               Connect
             </h4>
             <div className="flex space-x-4">
@@ -61,7 +60,7 @@ const Footer = () => {
                 },
                 {
                   icon: FaGithub,
-                  color: "#333",
+                  color: "#FFF",
                   link: "https://github.com/mpsinghji",
                 },
                 {
@@ -88,7 +87,7 @@ const Footer = () => {
 
           {/* Newsletter */}
           <div className="space-y-4">
-            <h4 className="text-lg font-bold bg-gradient-to-r from-purple-400 to-cyan-300 bg-clip-text text-transparent">
+            <h4 className="text-lg font-bold bg-white bg-clip-text text-transparent">
               Stay Updated
             </h4>
             <form className="flex gap-2">

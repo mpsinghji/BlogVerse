@@ -10,12 +10,11 @@ const RelatedBlogs = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [id]);
   return (
-    <div className="bg-slate-800/40 backdrop-blur-lg rounded-2xl border border-slate-700/30">
-      <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-cyan-300 bg-clip-text text-transparent p-6">
+    <div className=" backdrop-blur-lg rounded-2xl">
+      <h3 className="text-2xl font-bold bg-black bg-clip-text text-transparent p-6">
         Related Articles
       </h3>
       
-      <div className="border-t border-slate-700/30"></div>
 
       {isLoading ? (
         <div className="p-6 flex justify-center">
@@ -35,7 +34,6 @@ const RelatedBlogs = () => {
             >
               <div className="flex gap-4 items-start">
                 <div className="relative min-w-[80px]">
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-cyan-400/20 rounded-xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
                   <img 
                     src={blogs.coverImg} 
                     alt={blogs.title}
@@ -44,10 +42,10 @@ const RelatedBlogs = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <h4 className="text-lg font-medium bg-gradient-to-r from-purple-400 to-cyan-300 bg-clip-text text-transparent">
+                  <h4 className="text-lg font-medium bg-black bg-clip-text text-transparent">
                     {blogs.title.substring(0, 50)}
                   </h4>
-                  <p className="text-sm text-slate-400/80 leading-relaxed">
+                  <p className="text-sm text-[#FFF] leading-relaxed">
                     {blogs.description.substring(0, 80)}...
                   </p>
                 </div>

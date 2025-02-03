@@ -52,7 +52,7 @@ const Blogs = () => {
           <Link
             to={`/blogs/${blog._id}`}
             key={blog._id}
-            className="group relative overflow-hidden rounded-2xl bg-gradient-to-b from-slate-800/40 to-slate-900/60 backdrop-blur-sm border border-slate-700/30 hover:border-purple-500/50 transition-all duration-300 shadow-xl hover:shadow-purple-500/20"
+            className="group relative overflow-hidden rounded-2xl bg-gradient-to-b from-slate-800/40 to-slate-900/60 backdrop-blur-sm "
           >
             <div className="relative overflow-hidden h-80">
               <img
@@ -64,7 +64,7 @@ const Blogs = () => {
             </div>
 
             <div className="p-6 space-y-4">
-              <h2 className="text-2xl font-semibold bg-gradient-to-r from-purple-400 to-cyan-300 bg-clip-text text-transparent">
+              <h2 className="text-2xl font-semibold bg-white bg-clip-text text-transparent">
                 {blog.title}
               </h2>
               <div className="flex items-center space-x-2 text-slate-400"></div>

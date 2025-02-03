@@ -21,9 +21,8 @@ const PostAComment = () => {
 
   return (
     <div className="group relative">
-      <div className="absolute -inset-1 bg-gradient-to-r from-purple-600/20 to-cyan-500/20 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-      <div className="relative bg-slate-900/40 backdrop-blur-lg rounded-xl border border-slate-700/30 p-6">
-        <h3 className="text-xl font-bold bg-gradient-to-r from-purple-400 to-cyan-300 bg-clip-text text-transparent mb-6">
+      <div>
+        <h3 className="text-xl font-bold bg-white to-cyan-300 bg-clip-text text-transparent mb-6">
           Share Your Thoughts
         </h3>
         <form onSubmit={handleSubmit}>

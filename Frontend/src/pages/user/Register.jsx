@@ -8,11 +8,11 @@ const Login = () => {
   const [message, setMessage] = useState("");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 flex items-center justify-center p-4">
+    <div className="min-h-screen h-screen bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center p-4">
       <div className="relative max-w-md w-full bg-gradient-to-br from-slate-800/30 to-slate-900/50 backdrop-blur-xl rounded-2xl p-8 shadow-2xl shadow-purple-500/20 animate-float">
         <div className="absolute inset-0 rounded-2xl border border-slate-600/30 mix-blend-overlay" />
         
-        <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-purple-400 via-blue-300 to-indigo-400 bg-clip-text text-transparent">
+        <h2 className="text-4xl font-bold text-center mb-12 bg-white bg-clip-text text-transparent">
           Create Account
         </h2>
         
@@ -23,7 +23,7 @@ const Login = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Username"
-              className="w-full px-5 py-4 bg-slate-800/40 backdrop-blur-sm rounded-xl border border-slate-600/30 focus:border-purple-500/60 focus:ring-2 focus:ring-purple-500/20 transition-all duration-300 outline-none text-slate-100 placeholder-slate-400"
+              className="w-full px-5 py-4 bg-slate-800/40 backdrop-blur-sm rounded-xl border border-slate-600/30 focus:border-purple-500/60 focus:ring-2 focus:ring-purple-500/20 transition-all duration-300 outline-none text-slate-100 placeholder-slate-200"
               required
             />
             <div className="absolute inset-0 rounded-xl pointer-events-none border border-slate-500/30 group-hover:border-purple-500/50 transition-all duration-300 mix-blend-overlay" />
@@ -35,7 +35,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email"
-              className="w-full px-5 py-4 bg-slate-800/40 backdrop-blur-sm rounded-xl border border-slate-600/30 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 outline-none text-slate-100 placeholder-slate-400"
+              className="w-full px-5 py-4 bg-slate-800/40 backdrop-blur-sm rounded-xl border border-slate-600/30 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 outline-none text-slate-100 placeholder-slate-200"
               required
             />
             <div className="absolute inset-0 rounded-xl pointer-events-none border border-slate-500/30 group-hover:border-blue-500/50 transition-all duration-300 mix-blend-overlay" />
@@ -47,7 +47,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              className="w-full px-5 py-4 bg-slate-800/40 backdrop-blur-sm rounded-xl border border-slate-600/30 focus:border-indigo-500/60 focus:ring-2 focus:ring-indigo-500/20 transition-all duration-300 outline-none text-slate-100 placeholder-slate-400"
+              className="w-full px-5 py-4 bg-slate-800/40 backdrop-blur-sm rounded-xl border border-slate-600/30 focus:border-indigo-500/60 focus:ring-2 focus:ring-indigo-500/20 transition-all duration-300 outline-none text-slate-100 placeholder-slate-200"
               required
             />
             <div className="absolute inset-0 rounded-xl pointer-events-none border border-slate-500/30 group-hover:border-indigo-500/50 transition-all duration-300 mix-blend-overlay" />
@@ -64,7 +64,7 @@ const Login = () => {
           </button>
         </form>
 
-        <p className="mt-8 text-center text-slate-400">
+        <p className="mt-8 text-center text-slate-200 relative z-10">
           Already have an account?{" "}
           <Link
             to="/login"

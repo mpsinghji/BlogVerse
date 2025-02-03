@@ -9,7 +9,7 @@ const CommentCard = ({ comments }) => {
     <div className="space-y-8">
       {/* Comments Section */}
       <div className="bg-slate-800/40 backdrop-blur-lg rounded-2xl border border-slate-700/30 p-6 lg:p-8">
-        <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-cyan-300 bg-clip-text text-transparent mb-8">
+        <h3 className="text-2xl font-bold bg-white bg-clip-text text-transparent mb-8">
           Community Discussion
         </h3>
 
