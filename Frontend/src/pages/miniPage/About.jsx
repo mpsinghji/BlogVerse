@@ -2,7 +2,7 @@ import React from 'react'
 
 const About = () => {
   return (
-    <div className='container mx-auto px-4 py-12 sm:px-6 lg:px-50 mt-20'>
+    <div className='container mx-auto px-4 py-12 sm:px-6 lg:px-50 mt-20 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl'>
       <h1 className='text-3xl font-bold mb-6'>About Us</h1>
       <p className='text-lg mb-4'>
         Welcome to BlogVerse! We are a platform dedicated to sharing insightful articles on various topics. Our mission is to provide valuable content to our readers and create a community of knowledge seekers.

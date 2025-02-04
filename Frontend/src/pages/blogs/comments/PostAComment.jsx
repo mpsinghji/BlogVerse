@@ -1,22 +1,50 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaPaperPlane } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { usePostCommentMutation } from "../../../redux/features/comments/commentApi.js";
+import { useFetchBlogByIdQuery } from "../../../redux/features/blogs/BlogsApi.js";
 
 const PostAComment = () => {
   const { id } = useParams();
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user } = useSelector((state) => state.auth);
+  const [postComment] = usePostCommentMutation();
+  const navigate = useNavigate();
+  const { refetch } = useFetchBlogByIdQuery(id, { skip: !id });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // TODO: Add comment posting functionality
-    console.log("Comment:", comment);
+    if (!user) {
+      alert("Please login to post a comment");
+      navigate("/login");
+      setIsSubmitting(false);
+      return;
+    }
+
+    const newComment = {
+      comment: comment,
+      user: user?._id,
+      postId: id,
+    };
+
+    try {
+      const response = await postComment(newComment).unwrap();
+      console.log(response);
+      alert("Comment posted successfully");
+      setComment("");
+      refetch();
+    } catch (error) {
+      alert("Error posting comment");
+    }
+
     // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
       setComment("");
-    }, 2000);
+    });
   };
 
   return (

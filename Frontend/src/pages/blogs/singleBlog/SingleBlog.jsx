@@ -8,6 +8,7 @@ import RelatedBlogs from './RelatedBlogs'
 const SingleBlog = () => {
   const { id } = useParams()
   const { data: blog, error, isLoading } = useFetchBlogByIdQuery(id)
+  console.log(blog);
 
   return (
     <div className="min-h-screen bg-white py-12 pt-25">

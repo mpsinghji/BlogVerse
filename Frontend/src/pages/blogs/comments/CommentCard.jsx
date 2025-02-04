@@ -3,8 +3,11 @@ import DefaultUserIcon from "../../../assets/defaultUserIcon.png";
 import { formatDate } from "../../../utils/formatDate";
 import PostAComment from "./PostAComment";
 import { FaRegThumbsUp, FaRegThumbsDown, FaReply } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const CommentCard = ({ comments }) => {
+  console.log(comments);
+  const user = useSelector((state) => state.auth.user);
   return (
     <div className="space-y-8">
       {/* Comments Section */}
