@@ -7,6 +7,11 @@ import ContactUs from "../pages/miniPage/ContactUs.jsx";
 import SingleBlog from "../pages/blogs/singleBlog/SingleBlog.jsx";
 import Login from "../pages/user/Login.jsx";
 import Register from "../pages/user/Register.jsx";
+import AdminLayout from "../pages/admin/AdminLayout.jsx";
+import Dashboard from "../pages/admin/dashboard/Dashboard.jsx";
+import AddPost from "../pages/admin/post/AddPost.jsx";
+import ManagePost from "../pages/admin/post/ManagePost.jsx";
+import ManageUsers from "../pages/admin/user/ManageUsers.jsx";
 
 const router = createBrowserRouter([
   {
@@ -35,12 +40,34 @@ const router = createBrowserRouter([
       },
       {
         path: "/login",
-        element: <Login/>
+        element: <Login />,
       },
       {
         path: "/register",
-        element: <Register/>
-      }
+        element: <Register />,
+      },
+      {
+        path: "dashboard",
+        element: <AdminLayout />,
+        children: [
+          {
+            path: "",
+            element: <Dashboard />,
+          },
+          {
+            path: "add-new-post",
+            element: <AddPost />,
+          },
+          {
+            path: "manage-items",
+            element: <ManagePost />,
+          },
+          {
+            path: "users",
+            element: <ManageUsers />,
+          }
+        ],
+      },
     ],
   },
 ]);
