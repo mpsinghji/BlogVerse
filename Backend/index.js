@@ -8,12 +8,18 @@ import userRoute from "./routes/authUserRoute.js";
 
 import connectdb from "./config/db.js";
 
+import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
+
 dotenv.config({path:"./config/config.env"});
 
 const app = express();
 const port = process.env.PORT;
 
 // parse options
+app.use(bodyParser.json({limit: '10mb'}));
+app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
+app.use(cookieParser());
 app.use(express.json());
 app.use(cors({
   origin: process.env.WEB_URL,

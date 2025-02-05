@@ -26,7 +26,7 @@ export const BlogApi = createApi({
     }),
     postBlog : builder.mutation({
       query: (newBlog) => ({
-        url: `/ blogs/create-post`,
+        url: `/blogs/create-post`,
         method: "POST",
         body: newBlog,
         credentials: "include",
