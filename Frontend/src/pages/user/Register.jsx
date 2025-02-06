@@ -1,11 +1,26 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useRegisterMutation } from "../../redux/features/auth/authApi";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [registeruser, isLoading] = useRegisterMutation();
+
+  const navigate = useNavigate();
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    const data = { email, username, password };
+    try {
+      await registeruser(data).unwrap();
+      alert("User registered successfully.");
+      navigate("/login");
+    } catch (error) {
+      setMessage("Failed to register user.");
+    }
+  };
 
   return (
     <div className="min-h-screen h-screen bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center p-4">
@@ -16,7 +31,7 @@ const Login = () => {
           Create Account
         </h2>
         
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleRegister}>
           <div className="group relative">
             <input
               type="text"
