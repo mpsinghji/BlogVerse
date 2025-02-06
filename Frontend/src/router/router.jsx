@@ -13,6 +13,7 @@ import AddPost from "../pages/admin/post/AddPost.jsx";
 import ManagePost from "../pages/admin/post/ManagePost.jsx";
 import ManageUsers from "../pages/admin/user/ManageUsers.jsx";
 import PrivateRouter from "./PrivateRouter.jsx";
+import Updatepost from "../pages/admin/post/Updatepost.jsx";
 
 const router = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
             path: "users",
             element: <ManageUsers />,
           },
+          {
+            path: "update-items/:id",
+            element: <Updatepost />,
+          }
         ],
       },
     ],

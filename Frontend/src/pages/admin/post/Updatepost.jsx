@@ -1,12 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React, { useEffect, useRef, useState } from 'react'
+import { useSelector } from 'react-redux';
+import { useFetchBlogByIdQuery, usePostBlogMutation } from '../../../redux/features/blogs/BlogsApi';
 import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 import List from "@editorjs/list";
-import { usePostBlogMutation } from "../../../redux/features/blogs/BlogsApi";
+import { useNavigate, useParams } from 'react-router-dom';
 
-const AddPost = () => {
+const Updatepost = () => {
+  const { id } = useParams();
+
   const editorRef = useRef(null);
 
   const [title, setTitle] = useState("");
@@ -18,31 +20,31 @@ const AddPost = () => {
 
   const { user } = useSelector((state) => state.auth);
 
-  const [postBlog, {isLoading}] = usePostBlogMutation();
+  const {data: blog={}, error , isLoading, refetch} = useFetchBlogByIdQuery(id);
+  console.log(blog);
 
   useEffect(() => {
-    const editor = new EditorJS({
-      holder: "editorjs",
-      onReady: () => {
-        editorRef.current = editor;
-      },
-      autofocus: true,
-      tools: {
-        header: {
-          class: Header,
-          inlineToolbar: true,
+    if (blog.post) {
+      const editor = new EditorJS({
+        holder: "editorjs",
+        autofocus: true,
+        tools: {
+          header: Header,
+          list: List,
         },
-        list: {
-          class: List,
-          inlineToolbar: true,
+        data: blog.post.content,
+        onReady: () => {
+          editorRef.current = editor;
         },
-      },
-    });
-    return () => {
-      editor.destroy();
-      editorRef.current = null;
-    };
-  }, []);
+      });
+  
+      return () => {
+        editor.destroy();
+        editorRef.current = null;
+      };
+    }
+  }, [blog.post]);
+  
 
   const navigate = useNavigate();
 
@@ -50,35 +52,36 @@ const AddPost = () => {
     e.preventDefault();
     try {
       const content = await editorRef.current.save();
-      const newPost={
-        title,
-        coverImg,
+      const updatedPost={
+        title: title || blog.post.title,
+        coverImg: coverImg || blog.post.coverImg,
         content,
-        description: metaDescription,
+        description: metaDescription || blog.post.description,
         author: user?._id,
-        rating
+        rating: rating || blog.post.rating,
       }
-      const response = await postBlog(newPost).unwrap();
-      console.log("Post submitted successfully:", response);
-      setMessage("Post submitted successfully!");
-      navigate("/dashboard");
-      alert("Post submitted successfully!");
+
+      console.log(updatedPost);
+      // const response = await postBlog(newPost).unwrap();
+      // console.log("Post submitted successfully:", response);
+      // setMessage("Post submitted successfully!");
+      // navigate("/dashboard");
+      // alert("Post submitted successfully!");
     } catch (error) {
       console.error("Error saving post:", error);
       setMessage("Failed to submit post.");
     }
   };
-
   return (
     <div className="bg-white md:p-8 p-4 rounded-2xl shadow-xl border border-purple-50">
-      <h2 className="text-3xl font-bold mb-6 text-purple-800">Create New Post</h2>
+      <h2 className="text-3xl font-bold mb-6 text-purple-800">Edit or Update Post</h2>
       <form className="space-y-6" onSubmit={handleSubmit}>
         {/* Blog Title */}
         <div className="space-y-2">
           <label className="font-semibold text-lg text-purple-700">Blog Title</label>
           <input
             type="text"
-            value={title}
+            defaultValue={blog?.post?.title}
             onChange={(e) => setTitle(e.target.value)}
             className="w-full bg-white border-2 border-purple-100 px-4 py-3 rounded-xl focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all"
             placeholder="Enter your blog title"
@@ -106,7 +109,7 @@ const AddPost = () => {
               <label className="font-semibold text-purple-700">Cover Image URL</label>
               <input
                 type="text"
-                value={coverImg}
+                defaultValue={blog?.post?.coverImg}
                 onChange={(e) => setCoverImg(e.target.value)}
                 className="w-full bg-white border-2 border-purple-100 px-4 py-2 rounded-lg focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all"
                 placeholder="Paste image URL here"
@@ -119,7 +122,7 @@ const AddPost = () => {
               <label className="font-semibold text-purple-700">Category</label>
               <input
                 type="text"
-                value={category}
+                defaultValue={blog?.post?.category}
                 onChange={(e) => setCategory(e.target.value)}
                 className="w-full bg-white border-2 border-purple-100 px-4 py-2 rounded-lg focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all"
                 placeholder="e.g., Technology, Travel"
@@ -132,7 +135,7 @@ const AddPost = () => {
               <label className="font-semibold text-purple-700">Meta Description</label>
               <textarea
                 rows={4}
-                value={metaDescription}
+                defaultValue={blog?.post?.description}
                 onChange={(e) => setMetaDescription(e.target.value)}
                 className="w-full bg-white border-2 border-purple-100 px-4 py-2 rounded-lg focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all"
                 placeholder="Brief summary of your post"
@@ -147,7 +150,7 @@ const AddPost = () => {
                 type="number"
                 min="1"
                 max="5"
-                value={rating}
+                defaultValue={blog.post?.rating}
                 onChange={(e) => setRating(Number(e.target.value))}
                 className="w-full bg-white border-2 border-purple-100 px-4 py-2 rounded-lg focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all"
                 required
@@ -173,7 +176,7 @@ const AddPost = () => {
           disabled={isLoading}
           className="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold px-6 py-4 rounded-xl hover:from-purple-700 hover:to-purple-800 transition-all shadow-lg hover:shadow-purple-200"
         >
-          Publish Post
+          Update Post
         </button>
 
         {/* Message Display */}
@@ -184,7 +187,7 @@ const AddPost = () => {
         )}
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default AddPost;
+export default Updatepost
