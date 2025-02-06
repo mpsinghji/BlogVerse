@@ -13,7 +13,7 @@ const generateToken = async (userId) => {
       throw new Error("User not found");
     }
 
-    const token = jwt.sign({userId: user._id, role: user.role }, JWT_SECRET, {expiresIn: "1h"});
+    const token = jwt.sign({userId: user._id, role: user.role }, JWT_SECRET, {expiresIn: "12h"});
     return token;
 
   } catch (error) {

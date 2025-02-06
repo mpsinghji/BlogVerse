@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
-import { useFetchBlogByIdQuery, usePostBlogMutation } from '../../../redux/features/blogs/BlogsApi';
+import { useFetchBlogByIdQuery, useUpdateBlogMutation } from '../../../redux/features/blogs/BlogsApi';
 import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 import List from "@editorjs/list";
@@ -17,6 +17,8 @@ const Updatepost = () => {
   const [category, setCategory] = useState("");
   const [rating, setRating] = useState(0);
   const [message, setMessage] = useState("");
+
+  const [updateBlog] =useUpdateBlogMutation();
 
   const { user } = useSelector((state) => state.auth);
 
@@ -61,12 +63,14 @@ const Updatepost = () => {
         rating: rating || blog.post.rating,
       }
 
-      console.log(updatedPost);
-      // const response = await postBlog(newPost).unwrap();
-      // console.log("Post submitted successfully:", response);
-      // setMessage("Post submitted successfully!");
-      // navigate("/dashboard");
-      // alert("Post submitted successfully!");
+      // console.log(updatedPost);
+      const response = await updateBlog({ id, ...updatedPost }).unwrap();
+      console.log("Post updated successfully:", response);
+      setMessage("Post updated successfully!");
+      navigate("/dashboard");
+      refetch();
+      alert("Post updated successfully!");
+
     } catch (error) {
       console.error("Error saving post:", error);
       setMessage("Failed to submit post.");

@@ -31,6 +31,7 @@ export const BlogApi = createApi({
         body: newBlog,
         credentials: "include",
       }),
+      invalidatesTags: ["Blogs"],
     }),
     updateBlog: builder.mutation({
       query: ({ id, ...rest }) => ({

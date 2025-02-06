@@ -77,7 +77,7 @@ router.post("/logout", async (req, res) => {
 // get all users
 router.get("/users", async (req, res) => {
   try {
-    const users = await User.find({}, "id email role");
+    const users = await User.find({}, "id email username role");
     res.status(200).send({ message: "All users found successfully", users });
   } catch (error) {
     console.error("error getting all users", error);
