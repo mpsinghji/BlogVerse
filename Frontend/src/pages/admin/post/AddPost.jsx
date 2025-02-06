@@ -54,9 +54,10 @@ const AddPost = () => {
         title,
         coverImg,
         content,
+        category,
         description: metaDescription,
         author: user?._id,
-        rating
+        rating,
       }
       const response = await postBlog(newPost).unwrap();
       console.log("Post submitted successfully:", response);

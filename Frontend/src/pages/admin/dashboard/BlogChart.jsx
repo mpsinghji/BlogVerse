@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { formatDate } from "../../../utils/formatDate";
+import React, { useMemo } from "react";
 import {
-  LineChart,
-  Line,
+  BarChart,
+  Bar,
   CartesianGrid,
   XAxis,
   YAxis,
@@ -10,104 +9,43 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const formatData = (blogs, startDate, endDate) => {
-  if (!startDate || !endDate) return [];
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-  if (start > end) return [];
+const formatData = (blogs) => {
+  if (!blogs?.length) return [];
 
-  const dateCountMap = {};
-  const currentDate = new Date(start);
-
-  while (currentDate <= end) {
-    const dateStr = formatDate(currentDate);
-    dateCountMap[dateStr] = 0;
-    currentDate.setDate(currentDate.getDate() + 1);
-  }
+  const categoryCountMap = {};
 
   blogs.forEach((blog) => {
-    const date = formatDate(blog.createdAt);
-    if (dateCountMap[date] !== undefined) {
-      dateCountMap[date]++;
-    }
+    const category = blog.category || "Uncategorized";
+    categoryCountMap[category] = (categoryCountMap[category] || 0) + 1;
   });
 
-  return Object.keys(dateCountMap)
-    .map((date) => ({
-      name: date,
-      totalPosts: dateCountMap[date],
+  return Object.entries(categoryCountMap)
+    .map(([name, totalPosts]) => ({
+      name,
+      totalPosts,
     }))
-    .sort((a, b) => new Date(a.name) - new Date(b.name));
+    .sort((a, b) => b.totalPosts - a.totalPosts);
 };
 
 const BlogChart = ({ blogs }) => {
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-
-  useEffect(() => {
-    if (blogs?.length) {
-      const dates = blogs.map((blog) => new Date(blog.createdAt).getTime());
-      const minDate = new Date(Math.min(...dates));
-      const maxDate = new Date(Math.max(...dates));
-      setStartDate(minDate.toISOString().split("T")[0]);
-      setEndDate(maxDate.toISOString().split("T")[0]);
-    }
-  }, [blogs]);
-
-  const filteredBlogs = useMemo(() => {
-    if (!startDate || !endDate || !blogs?.length) return [];
-    const start = new Date(startDate);
-    start.setHours(0, 0, 0, 0);
-    const endDateObj = new Date(endDate);
-    endDateObj.setHours(23, 59, 59, 999);
-    return blogs.filter((blog) => {
-      const blogDate = new Date(blog.createdAt);
-      return blogDate >= start && blogDate <= endDateObj;
-    });
-  }, [blogs, startDate, endDate]);
-
-  const data = formatData(filteredBlogs, startDate, endDate);
+  const data = useMemo(() => formatData(blogs), [blogs]);
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">Blog Post Trend</h2>
-      <div className="flex gap-4 mb-4">
-        <div className="flex-1">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Start Date
-          </label>
-          <input
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-          />
-        </div>
-        <div className="flex-1">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            End Date
-          </label>
-          <input
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-          />
-        </div>
-      </div>
+      <h2 className="text-xl font-semibold mb-4">Blog Posts by Category (All Time)</h2>
       {data.length ? (
         <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart
+            <BarChart
               data={data}
-              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+              margin={{ top: 10, right: 30, left: 0, bottom: 30 }}
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="name"
-                tick={{ fontSize: 12 }}
                 angle={-45}
                 textAnchor="end"
+                tick={{ fontSize: 12 }}
               />
               <YAxis allowDecimals={false} />
               <Tooltip
@@ -118,19 +56,18 @@ const BlogChart = ({ blogs }) => {
                   boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
                 }}
               />
-              <Line
-                type="monotone"
+              <Bar
                 dataKey="totalPosts"
-                stroke="#6A0DAD"
-                strokeWidth={2}
-                dot={{ fill: "#6A0DAD", strokeWidth: 2 }}
+                fill="#6A0DAD"
+                name="Number of Posts"
+                maxBarSize={40}
               />
-            </LineChart>
+            </BarChart>
           </ResponsiveContainer>
         </div>
       ) : (
         <p className="text-gray-500 text-center py-8">
-          No blog data available for the selected range
+          No blog data available
         </p>
       )}
     </div>

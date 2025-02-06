@@ -58,6 +58,7 @@ const Updatepost = () => {
         title: title || blog.post.title,
         coverImg: coverImg || blog.post.coverImg,
         content,
+        category: category || blog.post.category,
         description: metaDescription || blog.post.description,
         author: user?._id,
         rating: rating || blog.post.rating,
