@@ -36,3 +36,25 @@ npm install
 ```bash
 npm run start
 ```
+
+
+
+## Credentials for Admin
+E-Mail
+```bash
+Admin1@gmail.com
+```
+Password
+```
+12345678
+```
+
+## Credentials for User
+E-Mail
+```bash
+User1@gmail.com
+```
+Password
+```
+12345678
+```
