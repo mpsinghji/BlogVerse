@@ -5,6 +5,7 @@ import {
 } from "../../../redux/features/auth/authApi";
 import { MdModeEdit } from "react-icons/md";
 import UpdateUserModal from "./UpdateUserModal";
+import { toast, ToastContainer } from "react-toastify";
 
 const ManageUsers = () => {
   const [selectedUser, setSelectedUser] = useState(null);
@@ -14,12 +15,43 @@ const ManageUsers = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await deleteUser(id).unwrap();
-      alert(response.message);
-      refetch();
+      toast.info(
+        <div className="flex flex-col items-center space-y-4">
+          <p className="text-gray-800">
+            Are you sure you want to delete this User?
+          </p>
+          <div className="flex space-x-4">
+            <button
+              className="px-4 py-2 bg-green-500 text-white rounded-xl"
+              onClick={async () => {
+                try {
+                  const response = await deleteUser(id).unwrap();
+                  toast.success(response.message);
+                  refetch();
+                } catch (error) {
+                  toast.error("Failed to delete post.");
+                  console.error(error);
+                }
+              }}
+            >
+              Yes
+            </button>
+            <button
+              className="px-4 py-2 bg-red-500 text-white rounded-lg"
+              onClick={() => toast.dismiss()}
+            >
+              No
+            </button>
+          </div>
+        </div>,
+        {
+          autoClose: true,
+          closeOnClick: true,
+        }
+      );
     } catch (error) {
       console.error("Error deleting user:", error);
-      alert("Failed to delete user.");
+      toast.error("Failed to delete user.");
     }
   };
   const handleEdit = (user) => {
@@ -27,7 +59,7 @@ const ManageUsers = () => {
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {  
+  const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedUser(null);
   };
@@ -48,6 +80,7 @@ const ManageUsers = () => {
 
   return (
     <>
+      <ToastContainer />
       {isLoading && (
         <div className="flex justify-center items-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
@@ -149,7 +182,11 @@ const ManageUsers = () => {
       </section>
 
       {isModalOpen && (
-        <UpdateUserModal user={selectedUser} onClose={handleCloseModal} onRoleUpdate={refetch} />
+        <UpdateUserModal
+          user={selectedUser}
+          onClose={handleCloseModal}
+          onRoleUpdate={refetch}
+        />
       )}
     </>
   );

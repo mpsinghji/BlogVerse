@@ -100,19 +100,43 @@ router.delete("/users/:id", async (req, res) => {
   }
 });
 
-//update a user role
+// Update a user's role and username
 router.put("/users/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { role } = req.body;
-    const user = await User.findByIdAndUpdate(id, { role}, { new: true });
+    const { role, username } = req.body;
+
+    const user = await User.findById(id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.status(200).send({ message: "User role updated successfully", user });
+
+    if (role) user.role = role;
+    if (username) user.username = username;
+
+    await user.save();
+
+    res
+      .status(200)
+      .send({ message: "User details updated successfully", user });
   } catch (error) {
-    console.error("error updating user role", error);
-    res.status(500).json({ message: "Error updating user role" });
+    console.error("Error updating user details:", error);
+    res.status(500).json({ message: "Error updating user details" });
+  }
+});
+
+// get a user by id
+router.get("/get/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.status(200).json({ message: "User found successfully", user });
+  } catch (error) {
+    console.error("Error getting username", error);
+    return res.status(500).json({ message: "Error getting username" });
   }
 });
 

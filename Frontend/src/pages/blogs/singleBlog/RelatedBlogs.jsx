@@ -7,7 +7,7 @@ const RelatedBlogs = () => {
   const { data: blog = [], error, isLoading } = useFetchRelatedBlogsQuery(id);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0});
   }, [id]);
   return (
     <div className=" backdrop-blur-lg rounded-2xl">

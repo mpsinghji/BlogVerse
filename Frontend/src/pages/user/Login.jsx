@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/features/auth/authSlice';
 import { FaSpinner } from 'react-icons/fa';
+import { FaEye, FaEyeSlash  } from "react-icons/fa";
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -11,6 +13,7 @@ const Login = () => {
   const [message, setMessage] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const [loginUser, { isLoading: loginLoading }] = useLoginMutation();
 
@@ -22,6 +25,7 @@ const Login = () => {
       const response = await loginUser(data).unwrap();
       const { token, user } = response;
       dispatch(setUser({ user }));
+      
       alert('Login successful');
       navigate('/');
     } catch (err) {
@@ -57,13 +61,19 @@ const Login = () => {
 
           <div className="group relative">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               className="w-full px-5 py-4 bg-slate-800/40 backdrop-blur-sm rounded-xl border border-slate-600/30 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 outline-none text-slate-100 placeholder-slate-200"
               required
             />
+            <div
+              className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEye className='text-gray-300 text-lg mr-3' /> : <FaEyeSlash className='text-gray-300 text-lg mr-3'  />}
+            </div>
             <div className="absolute inset-0 rounded-xl pointer-events-none border border-slate-500/30 group-hover:border-blue-500/50 transition-all duration-300 mix-blend-overlay" />
           </div>
 

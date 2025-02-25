@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { formatDate } from "../../../utils/formatDate";
 import EditorJSHTML from "editorjs-html";
 
@@ -16,11 +17,28 @@ const SingleBlogCard = ({ blogs }) => {
     createdAt,
   } = blogs || {};
   const htmlContent = editorJSHTML.parse(content);
+  const [authorUsername, setAuthorUsername] = useState("");
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-  , []);
+  }, []);
+
+  useEffect(() => {
+    const fetchUsername = async () => {
+      try {
+        if (!author) return;
+        const response = await axios.get(
+          `http://localhost:5000/api/auth/get/${author}`
+        );
+        setAuthorUsername(response.data.user?.username || "Unknown Author");
+      } catch (error) {
+        console.error("Error fetching author:", error);
+        setAuthorUsername("Error loading author");
+      }
+    };
+
+    fetchUsername();
+  }, [author]);
 
   return (
     <div className="space-y-8">
@@ -33,11 +51,13 @@ const SingleBlogCard = ({ blogs }) => {
           <div className="flex items-center space-x-4 text-white">
             <span className="flex items-center space-x-2">
               <span className="w-2 h-2 bg-gradient-to-r from-purple-600 to-cyan-500 rounded-full"></span>
-              <span className="bg-gradient-to-r from-purple-500/20 to-cyan-400/20 px-3 py-1 rounded-full border border-purple-500/30">{formatDate(createdAt)}</span>
+              <span className="bg-gradient-to-r from-purple-500/20 to-cyan-400/20 px-3 py-1 rounded-full border border-purple-500/30">
+                {formatDate(createdAt)}
+              </span>
             </span>
             <span className="w-2 h-2 bg-gradient-to-r from-purple-600 to-cyan-500 rounded-full"></span>
             <span className="bg-gradient-to-r from-purple-500/20 to-cyan-400/20 px-3 py-1 rounded-full border border-purple-500/30">
-              by {author?.username}
+              by {authorUsername}
             </span>
           </div>
         </div>
