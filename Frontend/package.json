@@ -13,6 +13,7 @@
     "@editorjs/editorjs": "^2.30.8",
     "@editorjs/header": "^2.8.8",
     "@editorjs/list": "^2.0.4",
+    "@emailjs/browser": "^4.4.1",
     "@reduxjs/toolkit": "^2.5.1",
     "@tailwindcss/vite": "^4.0.0",
     "axios": "^1.7.9",

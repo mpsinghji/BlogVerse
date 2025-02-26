@@ -1,77 +1,95 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from "react";
+import emailjs from "@emailjs/browser";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ContactUs = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
+  const form = useRef();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log(formData);
+    setIsLoading(true);
+
+    const formData = new FormData(form.current);
+    formData.append("date", new Date().toLocaleString());
+
+    emailjs
+      .sendForm(
+        import.meta.env.VITE_SERVICE_ID,
+        import.meta.env.VITE_TEMPLATE_ID,
+        form.current,
+        { publicKey: import.meta.env.VITE_PUBLIC_KEY }
+      )
+      .then(
+        (response) => {
+          console.log("✅ Email Sent Successfully:", response);
+          setIsLoading(false);
+          toast.success("Message sent successfully! 🎉", { position: "top-right", autoClose: 3000 });
+          form.current.reset();
+        },
+        (error) => {
+          console.error("❌ Email Sending Failed:", error);
+          setIsLoading(false);
+          toast.error("Failed to send message. ❌", { position: "top-right", autoClose: 3000 });
+        }
+      );
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gradient-to-r from-blue-500 to-purple-500">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
-        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Contact Us</h2>
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-500 px-6">
+      <form
+        ref={form}
+        onSubmit={handleSubmit}
+        className="bg-white p-8 md:p-10 rounded-2xl shadow-xl w-full max-w-lg transition-all duration-300 hover:shadow-2xl"
+      >
+        <h2 className="text-3xl font-extrabold mb-6 text-center text-gray-800">📩 Contact Us</h2>
+
         <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-            Name
-          </label>
+          <label className="block text-gray-700 text-sm font-semibold mb-2">Name</label>
           <input
             type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            name="user_username"
+            placeholder="John Doe"
+            required
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none transition-all duration-300"
           />
         </div>
+
         <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-            Email
-          </label>
+          <label className="block text-gray-700 text-sm font-semibold mb-2">Email</label>
           <input
             type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            name="user_email"
+            placeholder="john@gmail.com"
+            required
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none transition-all duration-300"
           />
         </div>
+
         <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="message">
-            Message
-          </label>
+          <label className="block text-gray-700 text-sm font-semibold mb-2">Message</label>
           <textarea
-            id="message"
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32 resize-none"
-          />
+            name="user_message"
+            rows="5"
+            placeholder="Write your message..."
+            required
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none transition-all duration-300 resize-none"
+          ></textarea>
         </div>
-        <div className="flex items-center justify-between">
-          <button
-            type="submit"
-            className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline"
-          >
-            Send
-          </button>
-        </div>
+
+        <button
+          type="submit"
+          className={`w-full bg-indigo-600 text-white font-bold py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-300 ${
+            isLoading ? "opacity-50 cursor-not-allowed animate-pulse" : "hover:bg-indigo-800"
+          }`}
+          disabled={isLoading}
+        >
+          {isLoading ? "Sending..." : "Send Message"}
+        </button>
       </form>
+
+      <ToastContainer />
     </div>
   );
 };
