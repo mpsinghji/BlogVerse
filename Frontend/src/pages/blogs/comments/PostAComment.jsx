@@ -4,7 +4,7 @@ import { FaPaperPlane } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { usePostCommentMutation } from "../../../redux/features/comments/commentApi.js";
 import { useFetchBlogByIdQuery } from "../../../redux/features/blogs/BlogsApi.js";
-import { toast, ToastContainer } from "react-toastify";
+import { showToast } from "../../../utils/toast";
 
 const PostAComment = () => {
   const { id } = useParams();
@@ -19,7 +19,7 @@ const PostAComment = () => {
     e.preventDefault();
     setIsSubmitting(true);
     if (!user) {
-      toast.error("Please login to post a comment");
+      showToast.error("Please login to post a comment");
       setTimeout(() => {
         navigate("/login");
       }, 2000);
@@ -36,11 +36,11 @@ const PostAComment = () => {
     try {
       const response = await postComment(newComment).unwrap();
       console.log(response);
-      toast.success("Comment posted successfully");
+      showToast.success("Comment posted successfully");
       setComment("");
       refetch();
     } catch (error) {
-      toast.error("Error posting comment");
+      showToast.error("Error posting comment");
     }
 
     // Simulate API call
@@ -52,7 +52,6 @@ const PostAComment = () => {
 
   return (
     <>
-      <ToastContainer />
       <div className="group relative">
         <div>
           <h3 className="text-xl font-bold bg-white to-cyan-300 bg-clip-text text-transparent mb-6">

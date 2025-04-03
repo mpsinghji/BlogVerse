@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/features/auth/authSlice';
 import { FaSpinner } from 'react-icons/fa';
 import { FaEye, FaEyeSlash  } from "react-icons/fa";
+import { showToast } from '../../utils/toast';
 
 
 const Login = () => {
@@ -26,7 +27,7 @@ const Login = () => {
       const { token, user } = response;
       dispatch(setUser({ user }));
       
-      alert('Login successful');
+      showToast.success('Login successful!');
       navigate('/');
     } catch (err) {
       setMessage("Please provide a valid email and password!");

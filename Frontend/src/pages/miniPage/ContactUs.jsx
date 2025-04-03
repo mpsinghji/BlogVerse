@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { showToast } from "../../utils/toast";
 
 const ContactUs = () => {
   const form = useRef();
@@ -19,19 +18,17 @@ const ContactUs = () => {
         import.meta.env.VITE_SERVICE_ID,
         import.meta.env.VITE_TEMPLATE_ID,
         form.current,
-        { publicKey: import.meta.env.VITE_PUBLIC_KEY }
+        import.meta.env.VITE_PUBLIC_KEY
       )
       .then(
-        (response) => {
-          console.log("✅ Email Sent Successfully:", response);
+        (result) => {
+          showToast.success("Message sent successfully! 🎉");
           setIsLoading(false);
-          toast.success("Message sent successfully! 🎉", { position: "top-right", autoClose: 3000 });
           form.current.reset();
         },
         (error) => {
-          console.error("❌ Email Sending Failed:", error);
+          showToast.error("Failed to send message. ❌");
           setIsLoading(false);
-          toast.error("Failed to send message. ❌", { position: "top-right", autoClose: 3000 });
         }
       );
   };
@@ -88,8 +85,6 @@ const ContactUs = () => {
           {isLoading ? "Sending..." : "Send Message"}
         </button>
       </form>
-
-      <ToastContainer />
     </div>
   );
 };

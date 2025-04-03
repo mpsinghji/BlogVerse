@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useUpdateUserRoleMutation } from "../../../redux/features/auth/authApi";
-import { toast, ToastContainer } from "react-toastify";
+import { showToast } from "../../../utils/toast";
 
 const UpdateUserModal = ({ user, onClose, onRoleUpdate }) => {
   const [role, setRole] = useState(user?.role);
@@ -9,25 +9,24 @@ const UpdateUserModal = ({ user, onClose, onRoleUpdate }) => {
 
   const handleUpdateRole = async () => {
     if (user?.role === role && user?.username === username) {
-      toast.info("No changes detected.");
+      showToast.info("No changes detected.");
       return;
     }
   
     try {
       await updateUserRole({ userId: user?._id, role, username }).unwrap();
-      toast.success("User details updated successfully!");
+      showToast.success("User details updated successfully!");
       onRoleUpdate();
       onClose();
     } catch (error) {
       console.error("Error updating user:", error);
-      toast.error("Failed to update user details.");
+      showToast.error("Failed to update user details.");
     }
   };
   
 
   return (
     <>
-      <ToastContainer />
       <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
         {/* Overlay with low opacity */}
         <div className="absolute inset-0 bg-black/30"></div>

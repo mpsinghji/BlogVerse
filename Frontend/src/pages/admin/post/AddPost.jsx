@@ -5,7 +5,7 @@ import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 import List from "@editorjs/list";
 import { usePostBlogMutation } from "../../../redux/features/blogs/BlogsApi";
-import { toast, ToastContainer } from "react-toastify";
+import { showToast } from "../../../utils/toast";
 
 const AddPost = () => {
   const editorRef = useRef(null);
@@ -59,21 +59,19 @@ const AddPost = () => {
         author: user?._id,
         rating,
       };
-      const response = await postBlog(newPost).unwrap();
-      console.log("Post submitted successfully:", response);
-      toast.success("Post submitted successfully!");
+      await postBlog(newPost).unwrap();
+      showToast.success("Post submitted successfully!");
       setTimeout(() => {
         navigate("/dashboard");
       }, 2000);
     } catch (error) {
-      toast.error("Error saving post. Please try again!");
+      showToast.error("Error saving post. Please try again!");
       console.error("Error saving post:", error);
     }
   };
 
   return (
     <>
-      <ToastContainer />
       <div className="bg-white md:p-8 p-4 rounded-2xl shadow-xl border border-purple-50">
         <h2 className="text-3xl font-bold mb-6 text-purple-800">
           Create New Post

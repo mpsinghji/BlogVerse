@@ -6,7 +6,7 @@ import {
 import { formatDate } from "../../../utils/formatDate";
 import { Link } from "react-router-dom";
 import { MdModeEdit } from "react-icons/md";
-import { toast, ToastContainer } from "react-toastify";
+import { showToast } from "../../../utils/toast";
 
 const ManagePost = () => {
   const [query, setQuery] = useState({ search: "", category: "" });
@@ -18,45 +18,32 @@ const ManagePost = () => {
   } = useFetchBlogsQuery(query);
   const [deleteBlog] = useDeleteBlogMutation();
 
-  const handleDelete = async (id) => {
-    try {
-      toast.info(
-        <div className="flex flex-col items-center space-y-4">
-          <p className="text-gray-800">
-            Are you sure you want to delete this post?
-          </p>
-          <div className="flex space-x-4">
-            <button
-              className="px-4 py-2 bg-green-500 text-white rounded-xl"
-              onClick={async () => {
-                try {
-                  const response = await deleteBlog(id).unwrap();
-                  toast.success(response.message);
-                  refetch();
-                } catch (error) {
-                  toast.error("Failed to delete post.");
-                  console.error(error);
-                }
-              }}
-            >
-              Yes
-            </button>
-            <button
-              className="px-4 py-2 bg-red-500 text-white rounded-lg"
-              onClick={() => toast.dismiss()}
-            >
-              No
-            </button>
-          </div>
-        </div>,
-        {
-          autoClose: true,
-          closeOnClick: true,
-        }
-      );
-    } catch (error) {
-      toast.error("Failed to delete post.");
-    }
+  const handleDelete = async (postId) => {
+    showToast.info(
+      <div>
+        Are you sure you want to delete this post?
+        <button
+          className="ml-2 px-2 py-1 bg-red-500 text-white rounded"
+          onClick={async () => {
+            try {
+              const response = await deleteBlog(postId).unwrap();
+              showToast.success(response.message);
+              refetch();
+            } catch (error) {
+              showToast.error("Failed to delete post.");
+            }
+          }}
+        >
+          Yes
+        </button>
+        <button
+          className="ml-2 px-2 py-1 bg-gray-500 text-white rounded"
+          onClick={() => showToast.dismiss()}
+        >
+          No
+        </button>
+      </div>
+    );
   };
 
   // Pagination logic
@@ -75,7 +62,6 @@ const ManagePost = () => {
 
   return (
     <>
-      <ToastContainer />
       {isLoading && (
         <div className="flex justify-center items-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>

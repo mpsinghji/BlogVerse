@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom";
+import { Toaster } from 'sonner';
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -12,6 +13,7 @@ function App() {
           <Outlet />
         </div>
         <Footer />
+        <Toaster richColors position="top-center" />
       </div>
     </>
   );

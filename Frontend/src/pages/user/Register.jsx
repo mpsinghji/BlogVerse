@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useRegisterMutation } from "../../redux/features/auth/authApi";
+import { showToast } from '../../utils/toast';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ const Login = () => {
     const data = { email, username, password };
     try {
       await registeruser(data).unwrap();
-      alert("User registered successfully.");
+      showToast.success("User registered successfully!");
       navigate("/login");
     } catch (error) {
       setMessage("Failed to register user.");

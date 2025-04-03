@@ -8,7 +8,7 @@ import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 import List from "@editorjs/list";
 import { useNavigate, useParams } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { showToast } from "../../../utils/toast";
 
 const Updatepost = () => {
   const { id } = useParams();
@@ -74,18 +74,17 @@ const Updatepost = () => {
       // console.log(updatedPost);
       const response = await updateBlog({ id, ...updatedPost }).unwrap();
       console.log("Post updated successfully:", response);
-      toast.success("Post updated successfully!");
+      showToast.success("Post updated successfully!");
       setTimeout(() => {
         navigate("/dashboard");
       }, 2000);
       refetch();
     } catch (error) {
-      toast.error("Error updating post. Please try again!");
+      showToast.error("Error updating post. Please try again!");
     }
   };
   return (
     <>
-      <ToastContainer />
       <div className="bg-white md:p-8 p-4 rounded-2xl shadow-xl border border-purple-50">
         <h2 className="text-3xl font-bold mb-6 text-purple-800">
           Edit or Update Post
