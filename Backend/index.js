@@ -18,9 +18,23 @@ const port = process.env.PORT;
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? process.env.WEB_URL 
-    : true, // Allow all origins in development
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      process.env.WEB_URL,
+      process.env.LOCAL_URL,
+      'http://localhost:5173',
+      'http://localhost:3000'
+    ];
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
@@ -50,7 +64,7 @@ async function main() {
     app.listen(port, () => {
       console.log(`App is listening at http://localhost:${port}`);
       console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
-      console.log(`CORS Origin: ${process.env.NODE_ENV === 'production' ? process.env.WEB_URL : 'All origins allowed'}`);
+      console.log(`Allowed Origins: ${process.env.WEB_URL}, ${process.env.LOCAL_URL}, http://localhost:5173, http://localhost:3000`);
     });
   }catch(err){
     console.log(err);
