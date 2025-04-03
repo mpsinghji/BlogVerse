@@ -16,13 +16,18 @@ dotenv.config({path:"./config/config.env"});
 const app = express();
 const port = process.env.PORT;
 
+// Determine allowed origins based on environment
+const allowedOrigins = process.env.NODE_ENV === 'production' 
+  ? [process.env.WEB_URL] 
+  : [process.env.LOCAL_URL];
+
 // parse options
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors({
-  origin: process.env.WEB_URL,
+  origin: allowedOrigins,
   credentials: true,
 }));
 
@@ -41,6 +46,8 @@ async function main() {
 
     app.listen(port, () => {
       console.log(`App is listening at http://localhost:${port}`);
+      console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+      console.log(`Allowed origins: ${allowedOrigins.join(', ')}`);
     });
   }catch(err){
     console.log(err);
