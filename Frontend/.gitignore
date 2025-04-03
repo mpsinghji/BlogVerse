@@ -27,3 +27,5 @@ node_modules
 
 src/assets
 .env
+.env.production
+.enc.development

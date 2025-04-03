@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { formatDate } from "../../../utils/formatDate";
 import EditorJSHTML from "editorjs-html";
+import { BACKEND_URL } from "../../../config/config";
 
 const editorJSHTML = EditorJSHTML();
 
@@ -28,7 +29,7 @@ const SingleBlogCard = ({ blogs }) => {
       try {
         if (!author) return;
         const response = await axios.get(
-          `http://localhost:5000/api/auth/get/${author}`
+          `${BACKEND_URL}/api/auth/get/${author}`
         );
         setAuthorUsername(response.data.user?.username || "Unknown Author");
       } catch (error) {
