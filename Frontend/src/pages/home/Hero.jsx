@@ -29,7 +29,7 @@ const Hero = () => {
   ];
 
   return (
-    <div className="flex flex-col lg:flex-row justify-between items-center gap-8 py-12 px-4 sm:px-8">
+    <div className="flex flex-col lg:flex-row justify-between items-center gap-8 py-5 px-4 sm:px-8">
       {/* Text Content */}
       <div className="lg:w-1/2 w-full space-y-6 relative z-10">
         <div className="relative group">
