@@ -26,7 +26,7 @@ app.use(cors({
       process.env.WEB_URL,
       process.env.LOCAL_URL,
       'http://localhost:5173',
-      'http://localhost:3000'
+      'http://localhost:5000'
     ];
     
     if (allowedOrigins.indexOf(origin) === -1) {
@@ -63,8 +63,8 @@ async function main() {
 
     app.listen(port, () => {
       console.log(`App is listening at http://localhost:${port}`);
-      console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
-      console.log(`Allowed Origins: ${process.env.WEB_URL}, ${process.env.LOCAL_URL}, http://localhost:5173, http://localhost:3000`);
+      console.log(`Environment: ${process.env.NODE_ENV }`);
+      console.log(`Allowed Origins: ${process.env.WEB_URL}, ${process.env.LOCAL_URL}, ${process.env.BACKEND_WEB_URL}, ${process.env.BACKEND_LOCAL_URL}`);
     });
   }catch(err){
     console.log(err);
