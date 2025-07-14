@@ -16,16 +16,14 @@ dotenv.config({path:"./config/config.env"});
 const app = express();
 const port = process.env.PORT;
 
-// CORS configuration
 app.use(cors({
   origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
     
     const allowedOrigins = [
       process.env.WEB_URL,
       process.env.LOCAL_URL,
-      'http://localhost:5173',
+      'http://localhost:5176',
       'http://localhost:5000'
     ];
     
